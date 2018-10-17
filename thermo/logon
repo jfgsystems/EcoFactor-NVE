@@ -1,0 +1,5 @@
+#!/bin/bash
+    
+#modified to remove sensitive info, add your own in. digest username, nonce, response, cookie data 
+
+curl -s -b /opt/tools/thermo/cookies/co -c /opt/tools/thermo/cookies/co -k --raw  -X POST "https://nve.ecofactor.com/ws/v1.0/authenticate" -H "Content-Type: application/json" -H "Accept: application/json, text/javascript, */*; q=0.01" -H "Authorization: DigestE username=\"USERNAME@EMAILDOMAIN\", realm=\"Consumer\", nonce=\"\", response=\"\", opaque=\"LUW18KGXMV0ZCSFIFMAK969Y1N8S0OIA\"" -H "X-Requested-With: XMLHttpRequest" -H "Referer: https://nve.ecofactor.com/" -H "Accept-Language: en-US" -H "Accept-Encoding: gzip, deflate" -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko" -H "Host: nve.ecofactor.com" -H "Connection: Keep-Alive" -H "Cache-Control: no-cache" -H "Cookie: "

@@ -1,0 +1,79 @@
+#!/bin/bash
+
+if [ $(find "/opt/tools/thermo/cookies/co" -mmin +20 -print) ]; then
+  /opt/tools/thermo/logon
+  #echo logon
+fi
+#define your echofactor thermostat id here first
+$THERMOID=
+curl -s -b /opt/tools/thermo/cookies/co -k -o /opt/tools/thermo/work/state https://nve.ecofactor.com/ws/v1.0/thermostat/$THERMOID/state
+
+
+
+
+OPTIONS=tfsmpche
+LONGOPTS=currenttemp,fanstatus,hvacstatus,fanmode,hvacmode,coolset,heatset,currrentset
+
+
+! PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
+if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
+   
+    exit 2
+fi
+
+eval set -- "$PARSED"
+
+
+while true; do
+    case "$1" in
+        -t|--currenttemp)
+            #echo current temp
+			jq <  /opt/tools/thermo/work/state  '.last_collected_thermostat_data.temperature'
+            shift
+            ;;
+        -f|--fanstatus)
+            #echo fan status
+			jq <  /opt/tools/thermo/work/state  '.last_collected_thermostat_data.fan_status'
+            shift
+            ;;
+        -s|--hvacstatus)
+           #echo hvac status
+			jq <  /opt/tools/thermo/work/state  '.last_collected_thermostat_data.hvac_status'
+            shift
+            ;;
+        -m|--fanmode)
+            #echo fan mode
+			jq <  /opt/tools/thermo/work/state  '.last_collected_thermostat_data.fan_mode'
+            shift 
+            ;;
+		-p|--hvacmode)
+            #echo hvac mode
+			jq <  /opt/tools/thermo/work/state  '.last_collected_thermostat_data.hvac_mode'
+            shift 
+            ;;
+		-c|--coolset)
+            #echo cool setpoint
+			jq <  /opt/tools/thermo/work/state  '.last_collected_thermostat_data.cool_setpoint'
+            shift 
+            ;;
+		-h|--heatset)
+           #echo heat setpoint
+		   jq <  /opt/tools/thermo/work/state  '.last_collected_thermostat_data.heat_setpoint'
+            shift 
+            ;;
+		-e|--currrentset)
+            #echo current setpoint
+			jq <  /opt/tools/thermo/work/state  '.ee_details.setpoint'
+            shift 
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "error"
+            exit 3
+            ;;
+    esac
+done
+

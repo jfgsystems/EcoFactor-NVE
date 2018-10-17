@@ -1,0 +1,9 @@
+#!/bin/sh
+#if [ $(find "$@" -mmin +20 -print) ]; then
+if [ $(find "/opt/tools/thermo/cookies/co" -mmin +20 -print) ]; then
+  echo "older than 20"
+else
+
+echo "not older than 20"
+
+fi
